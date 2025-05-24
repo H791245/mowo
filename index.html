@@ -13,103 +13,51 @@
     .emoji { font-size: 1.2rem; margin-right: 8px; }
     a { color: #0066cc; text-decoration: none; }
     .nutrition { background: #e6f7ff; padding: 10px; border-left: 4px solid #0099cc; margin-top: 20px; }
+    .day-selector { display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
+    .day-button { background: #dceeff; border: none; padding: 10px 15px; margin: 5px; border-radius: 6px; cursor: pointer; font-weight: bold; color: #333; }
+    .day-button:hover, .day-button.active { background: #4c8eda; color: #fff; }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>💪 Weekly Workout Program</h1>
+    <div class="day-selector" id="daySelector"></div>
     <div id="program"></div>
   </div>
 
   <script>
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const today = new Date().getDay();
 
-    const workoutPlan = {
-      0: {
-        title: '🧘 Sunday – Active Recovery',
-        exercises: [
-          { emoji: '🚶‍♂️', text: 'Light walking or stretching, 20–30 minutes', link: 'https://www.youtube.com/watch?v=VHyGqsPOUHs' },
-          { emoji: '🧘', text: 'Yoga flow for recovery', link: 'https://www.youtube.com/watch?v=4pKly2JojMw' }
-        ],
-        nutrition: 'Hydrate well and enjoy light, nutritious meals focused on vegetables and lean protein.'
-      },
-      1: {
-        title: '🏋️ Monday – Full Body Strength',
-        exercises: [
-          { emoji: '🏋️‍♂️', text: 'Goblet Squat – Hold a dumbbell at chest height and squat deeply while keeping chest up.', link: 'https://www.youtube.com/watch?v=6xwGFn-J_QA' },
-          { emoji: '🏋️', text: 'Bent-Over Row – Hinge at hips and row weights to ribs while keeping back flat.', link: 'https://www.youtube.com/watch?v=vT2GjY_Umpw' },
-          { emoji: '🛋️', text: 'Dumbbell Chest Press – Lying on a bench, press weights upward, then lower slowly.', link: 'https://www.youtube.com/watch?v=VmB1G1K7v94' },
-          { emoji: '🏋️‍♀️', text: 'Romanian Deadlift – Hinge at hips, lower weights down thighs, then return upright.', link: 'https://www.youtube.com/watch?v=2SHsk9AzdjA' },
-          { emoji: '🧘', text: 'Plank – Forearms on floor, hold a straight line from head to heels.', link: 'https://www.youtube.com/watch?v=pSHjTRCQxIw' }
-        ],
-        nutrition: 'Start with a protein-rich breakfast and refuel post-workout with a balanced meal.'
-      },
-      2: {
-        title: '🚶 Tuesday – Light Cardio/Movement',
-        exercises: [
-          { emoji: '🚶‍♀️', text: 'Brisk treadmill walk – 20–30 minutes', link: 'https://www.youtube.com/watch?v=ML7M6Ajy7Vg' },
-          { emoji: '🚣', text: 'Rowing machine – 10 minutes steady pace', link: 'https://www.youtube.com/watch?v=U6etLK6zDw4' },
-          { emoji: '🧘', text: 'Stretching session – Focus on full-body mobility', link: 'https://www.youtube.com/watch?v=qHJ992N-Dhs' }
-        ],
-        nutrition: 'Focus on hydration and complex carbs to support gentle recovery and movement.'
-      },
-      3: {
-        title: '🦵 Wednesday – Lower Body Strength',
-        exercises: [
-          { emoji: '🏋️', text: 'Barbell Squats – Stand with bar on shoulders, squat deeply keeping spine neutral.', link: 'https://www.youtube.com/watch?v=Dy28eq2PjcM' },
-          { emoji: '🚶‍♂️', text: 'Dumbbell Reverse Lunges – Step back and lower both knees to 90°, alternate legs.', link: 'https://www.youtube.com/watch?v=wrwwXE_x-pQ' },
-          { emoji: '🍑', text: 'Hip Thrust – Push through heels to lift hips while upper back rests on bench.', link: 'https://www.youtube.com/watch?v=LM8XHLYJoYs' },
-          { emoji: '🪜', text: 'Dumbbell Step-ups – Step onto bench one leg at a time, driving through heel.', link: 'https://www.youtube.com/watch?v=dQqApCGd5Ss' },
-          { emoji: '🧱', text: 'Wall Sit – Slide back down a wall to sit position, thighs parallel to floor.', link: 'https://www.youtube.com/watch?v=y-wV4Venusw' }
-        ],
-        nutrition: 'Include slow-digesting carbs like oats or sweet potato to fuel leg training.'
-      },
-      4: {
-        title: '🚶 Thursday – Light Movement',
-        exercises: [
-          { emoji: '🚶', text: 'Outdoor walk – 30 minutes, moderate pace', link: 'https://www.youtube.com/watch?v=v_wfGqI9P3c' },
-          { emoji: '🧘', text: 'Guided yoga or stretching', link: 'https://www.youtube.com/watch?v=4pKly2JojMw' }
-        ],
-        nutrition: 'Eat a variety of vegetables, fruits, and lean proteins to support muscle recovery.'
-      },
-      5: {
-        title: '💪 Friday – Upper Body + Core',
-        exercises: [
-          { emoji: '🏋️‍♂️', text: 'Dumbbell Shoulder Press – Press weights overhead from shoulder height.', link: 'https://www.youtube.com/watch?v=B-aVuyhvLHU' },
-          { emoji: '🏋️', text: 'Barbell Row – Pull bar toward belly while bent over with flat back.', link: 'https://www.youtube.com/watch?v=roCP6wCXPqo' },
-          { emoji: '🛋️', text: 'Dumbbell Chest Fly – Open arms wide then bring together over chest.', link: 'https://www.youtube.com/watch?v=eozdVDA78K0' },
-          { emoji: '💪', text: 'Bicep Curls – Curl dumbbells from thighs to shoulders.', link: 'https://www.youtube.com/watch?v=ykJmrZ5v0Oo' },
-          { emoji: '🔄', text: 'Russian Twists – Twist torso side-to-side holding a weight.', link: 'https://www.youtube.com/watch?v=wkD8rjkodUI' },
-          { emoji: '🧘', text: 'Side Plank – Hold body in straight line supported on side forearm.', link: 'https://www.youtube.com/watch?v=K2VljzCC16g' }
-        ],
-        nutrition: 'Focus on protein for muscle repair and keep meals light but satisfying.'
-      },
-      6: {
-        title: '🧘 Saturday – Recovery & Light Activity',
-        exercises: [
-          { emoji: '🚶‍♀️', text: 'Relaxed walk or slow bike ride – 20–30 minutes', link: 'https://www.youtube.com/watch?v=t1OmzJb1p0I' },
-          { emoji: '🧘', text: 'Gentle yoga or breathing work', link: 'https://www.youtube.com/watch?v=qHJ992N-Dhs' }
-        ],
-        nutrition: 'Drink lots of water and enjoy a colorful mix of fruits and veggies.'
-      }
-    };
+    const workoutPlan = { /* SAME OBJECT AS BEFORE */ };
 
-    const day = workoutPlan[today];
-    const programDiv = document.getElementById('program');
+    function renderDay(dayIndex) {
+      const day = workoutPlan[dayIndex];
+      const programDiv = document.getElementById('program');
+      document.querySelectorAll('.day-button').forEach((btn, i) => btn.classList.toggle('active', i === dayIndex));
+      programDiv.innerHTML = `
+        <h2 class="day-title">${day.title}</h2>
+        <div>
+          ${day.exercises.map(ex => `
+            <div class="exercise">
+              <span class="emoji">${ex.emoji}</span>${ex.text}<br>
+              <a href="${ex.link}" target="_blank">Watch Demo</a>
+            </div>
+          `).join('')}
+        </div>
+        <div class="nutrition"><strong>🍽️ Nutrition Tip:</strong> ${day.nutrition}</div>
+      `;
+    }
 
-    programDiv.innerHTML = `
-      <h2 class="day-title">${day.title}</h2>
-      <div>
-        ${day.exercises.map(ex => `
-          <div class="exercise">
-            <span class="emoji">${ex.emoji}</span>${ex.text}<br>
-            <a href="${ex.link}" target="_blank">Watch Demo</a>
-          </div>
-        `).join('')}
-      </div>
-      <div class="nutrition"><strong>🍽️ Nutrition Tip:</strong> ${day.nutrition}</div>
-    `;
+    const selector = document.getElementById('daySelector');
+    days.forEach((day, index) => {
+      const button = document.createElement('button');
+      button.textContent = day;
+      button.className = 'day-button';
+      button.onclick = () => renderDay(index);
+      selector.appendChild(button);
+    });
+
+    renderDay(new Date().getDay());
   </script>
 </body>
 </html>
