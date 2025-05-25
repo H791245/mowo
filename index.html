@@ -1,63 +1,594 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weekly Workout Program</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; background-color: #f7f9fc; padding: 20px; }
-    .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.05); }
-    h1 { text-align: center; color: #333; }
-    .day-title { font-size: 1.5rem; margin: 20px 0 10px; color: #444; }
-    .exercise { margin-bottom: 15px; }
-    .emoji { font-size: 1.2rem; margin-right: 8px; }
-    a { color: #0066cc; text-decoration: none; }
-    .nutrition { background: #e6f7ff; padding: 10px; border-left: 4px solid #0099cc; margin-top: 20px; }
-    .day-selector { display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
-    .day-button { background: #dceeff; border: none; padding: 10px 15px; margin: 5px; border-radius: 6px; cursor: pointer; font-weight: bold; color: #333; }
-    .day-button:hover, .day-button.active { background: #4c8eda; color: #fff; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Personal Fitness Journey 💪</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .goals-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .goal-item {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .today-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .workout-card, .nutrition-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .exercise-item {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .youtube-link {
+            display: inline-block;
+            background: #ff4757;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+
+        .youtube-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+        }
+
+        .weekly-overview {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .day-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .day-card.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .motivational-quote {
+            background: linear-gradient(135deg, #56CCF2, #2F80ED);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .progress-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .exercise-description {
+            font-style: italic;
+            color: #666;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .sets-reps {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .today-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .weekly-overview {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>💪 Weekly Workout Program</h1>
-    <div class="day-selector" id="daySelector"></div>
-    <div id="program"></div>
-  </div>
+    <div class="container">
+        <header class="header">
+            <h1>💪 Your Personal Fitness Journey</h1>
+            <p>Transform Your Body, Transform Your Life</p>
+        </header>
 
-  <script>
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-    const workoutPlan = { /* SAME OBJECT AS BEFORE */ };
-
-    function renderDay(dayIndex) {
-      const day = workoutPlan[dayIndex];
-      const programDiv = document.getElementById('program');
-      document.querySelectorAll('.day-button').forEach((btn, i) => btn.classList.toggle('active', i === dayIndex));
-      programDiv.innerHTML = `
-        <h2 class="day-title">${day.title}</h2>
-        <div>
-          ${day.exercises.map(ex => `
-            <div class="exercise">
-              <span class="emoji">${ex.emoji}</span>${ex.text}<br>
-              <a href="${ex.link}" target="_blank">Watch Demo</a>
+        <div class="goals-card">
+            <h2>🎯 Your Fitness Goals</h2>
+            <div class="goals-grid">
+                <div class="goal-item">
+                    <div style="font-size: 2rem;">💪</div>
+                    <h3>Build Muscle</h3>
+                    <p>Increase strength & definition</p>
+                </div>
+                <div class="goal-item">
+                    <div style="font-size: 2rem;">⚖️</div>
+                    <h3>Lose Weight</h3>
+                    <p>72kg → 67kg in 4 months</p>
+                </div>
+                <div class="goal-item">
+                    <div style="font-size: 2rem;">🔥</div>
+                    <h3>Daily Movement</h3>
+                    <p>25-30 min every day</p>
+                </div>
+                <div class="goal-item">
+                    <div style="font-size: 2rem;">📈</div>
+                    <h3>Progressive Overload</h3>
+                    <p>Continuous improvement</p>
+                </div>
             </div>
-          `).join('')}
         </div>
-        <div class="nutrition"><strong>🍽️ Nutrition Tip:</strong> ${day.nutrition}</div>
-      `;
-    }
 
-    const selector = document.getElementById('daySelector');
-    days.forEach((day, index) => {
-      const button = document.createElement('button');
-      button.textContent = day;
-      button.className = 'day-button';
-      button.onclick = () => renderDay(index);
-      selector.appendChild(button);
-    });
+        <div class="motivational-quote" id="motivationalQuote">
+            "The groundwork for all happiness is good health. Today is the perfect day to invest in yourself!" 🌟
+        </div>
 
-    renderDay(new Date().getDay());
-  </script>
+        <div class="today-section">
+            <div class="workout-card">
+                <h2 id="todayTitle">🏋️‍♀️ Today's Workout</h2>
+                <div id="todayWorkout">
+                    <!-- Today's workout will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="nutrition-card">
+                <h2>🥗 Today's Nutrition Focus</h2>
+                <div id="nutritionContent">
+                    <p><strong>🎯 Daily Targets:</strong></p>
+                    <ul style="margin: 15px 0; padding-left: 20px;">
+                        <li>💧 Water: 2.5-3L</li>
+                        <li>🥩 Protein: 85-100g</li>
+                        <li>🔥 Calorie deficit: 300-400 cal</li>
+                        <li>⏰ Pre-workout snack if needed</li>
+                    </ul>
+                    <p><strong>💡 Tip:</strong> <span id="nutritionTip">Focus on lean proteins and vegetables to support muscle building while in a caloric deficit.</span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="goals-card">
+            <h2>📅 Weekly Overview</h2>
+            <div class="weekly-overview">
+                <div class="day-card active" onclick="showDay('monday')">
+                    <div style="font-size: 1.5rem;">💪</div>
+                    <h3>MON</h3>
+                    <p>Strength A</p>
+                </div>
+                <div class="day-card" onclick="showDay('tuesday')">
+                    <div style="font-size: 1.5rem;">🚣</div>
+                    <h3>TUE</h3>
+                    <p>Cardio 1</p>
+                </div>
+                <div class="day-card" onclick="showDay('wednesday')">
+                    <div style="font-size: 1.5rem;">💪</div>
+                    <h3>WED</h3>
+                    <p>Strength B</p>
+                </div>
+                <div class="day-card" onclick="showDay('thursday')">
+                    <div style="font-size: 1.5rem;">🧘</div>
+                    <h3>THU</h3>
+                    <p>Recovery</p>
+                </div>
+                <div class="day-card" onclick="showDay('friday')">
+                    <div style="font-size: 1.5rem;">💪</div>
+                    <h3>FRI</h3>
+                    <p>Strength C</p>
+                </div>
+                <div class="day-card" onclick="showDay('saturday')">
+                    <div style="font-size: 1.5rem;">🏃‍♀️</div>
+                    <h3>SAT</h3>
+                    <p>Cardio 2</p>
+                </div>
+                <div class="day-card" onclick="showDay('sunday')">
+                    <div style="font-size: 1.5rem;">🧘</div>
+                    <h3>SUN</h3>
+                    <p>Recovery</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <h2>📊 Progress Tracking</h2>
+            <p><strong>Weekly Check-ins:</strong> Weight, measurements, strength progression, energy levels</p>
+            <br>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <div style="text-align: center; padding: 15px; background: #f8f9ff; border-radius: 10px;">
+                    <div style="font-size: 1.5rem;">📏</div>
+                    <p><strong>Current Weight</strong><br>72kg</p>
+                </div>
+                <div style="text-align: center; padding: 15px; background: #f8f9ff; border-radius: 10px;">
+                    <div style="font-size: 1.5rem;">🎯</div>
+                    <p><strong>Target Weight</strong><br>67kg</p>
+                </div>
+                <div style="text-align: center; padding: 15px; background: #f8f9ff; border-radius: 10px;">
+                    <div style="font-size: 1.5rem;">📅</div>
+                    <p><strong>Timeline</strong><br>4 months</p>
+                </div>
+                <div style="text-align: center; padding: 15px; background: #f8f9ff; border-radius: 10px;">
+                    <div style="font-size: 1.5rem;">⏱️</div>
+                    <p><strong>Daily Time</strong><br>25-30 min</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const workoutData = {
+            monday: {
+                title: "💪 Strength Day A - Full Body",
+                type: "strength",
+                duration: "30 minutes",
+                exercises: [
+                    {
+                        name: "Barbell Squats",
+                        sets: "3 sets x 8-10 reps",
+                        description: "Stand with feet shoulder-width apart, lower hips back and down, keep chest up, drive through heels to stand",
+                        youtube: "https://www.youtube.com/results?search_query=barbell+squats+proper+form"
+                    },
+                    {
+                        name: "Bench Press",
+                        sets: "3 sets x 8-10 reps",
+                        description: "Lie on bench, grip bar wider than shoulders, lower to chest, press up with control",
+                        youtube: "https://www.youtube.com/results?search_query=bench+press+proper+form"
+                    },
+                    {
+                        name: "Bent-over Barbell Rows",
+                        sets: "3 sets x 8-10 reps",
+                        description: "Hinge at hips, lean forward 45°, pull bar to lower chest, squeeze shoulder blades",
+                        youtube: "https://www.youtube.com/results?search_query=bent+over+barbell+rows+form"
+                    },
+                    {
+                        name: "Dumbbell Shoulder Press",
+                        sets: "2 sets x 10-12 reps",
+                        description: "Sit or stand, dumbbells at shoulder height, press straight up overhead, lower with control",
+                        youtube: "https://www.youtube.com/results?search_query=dumbbell+shoulder+press+form"
+                    },
+                    {
+                        name: "Plank",
+                        sets: "2 sets x 30-45 seconds",
+                        description: "Forearms on ground, body straight line from head to heels, engage core",
+                        youtube: "https://www.youtube.com/results?search_query=plank+proper+form"
+                    }
+                ]
+            },
+            tuesday: {
+                title: "🚣 Cardio Day 1 - Rowing Focus",
+                type: "cardio",
+                duration: "25 minutes",
+                exercises: [
+                    {
+                        name: "Warm-up",
+                        sets: "5 minutes",
+                        description: "Easy rowing pace to prepare your body",
+                        youtube: "https://www.youtube.com/results?search_query=rowing+machine+warm+up"
+                    },
+                    {
+                        name: "Interval Training",
+                        sets: "15 minutes",
+                        description: "2 minutes moderate pace, 1 minute easy pace (repeat 5 times)",
+                        youtube: "https://www.youtube.com/results?search_query=rowing+interval+training"
+                    },
+                    {
+                        name: "Cool-down",
+                        sets: "5 minutes",
+                        description: "Easy rowing pace to gradually lower heart rate",
+                        youtube: "https://www.youtube.com/results?search_query=rowing+cool+down"
+                    }
+                ]
+            },
+            wednesday: {
+                title: "💪 Strength Day B - Full Body",
+                type: "strength",
+                duration: "30 minutes",
+                exercises: [
+                    {
+                        name: "Deadlifts",
+                        sets: "3 sets x 6-8 reps",
+                        description: "Feet hip-width apart, grip bar outside legs, lift by driving hips forward and standing tall",
+                        youtube: "https://www.youtube.com/results?search_query=deadlift+proper+form"
+                    },
+                    {
+                        name: "Dumbbell Chest Press",
+                        sets: "3 sets x 10-12 reps",
+                        description: "Lie on bench, dumbbells in each hand, press up from chest level, control the descent",
+                        youtube: "https://www.youtube.com/results?search_query=dumbbell+chest+press+form"
+                    },
+                    {
+                        name: "Dumbbell Rows",
+                        sets: "3 sets x 10-12 reps (each arm)",
+                        description: "One knee on bench, opposite arm rowing dumbbell to hip, keep back straight",
+                        youtube: "https://www.youtube.com/results?search_query=single+arm+dumbbell+row"
+                    },
+                    {
+                        name: "Dumbbell Lunges",
+                        sets: "2 sets x 8 reps each leg",
+                        description: "Step forward, lower back knee toward ground, push through front heel to return",
+                        youtube: "https://www.youtube.com/results?search_query=dumbbell+lunges+proper+form"
+                    },
+                    {
+                        name: "Dumbbell Bicep Curls",
+                        sets: "2 sets x 12-15 reps",
+                        description: "Arms at sides, curl dumbbells toward shoulders, squeeze biceps, lower slowly",
+                        youtube: "https://www.youtube.com/results?search_query=dumbbell+bicep+curls+form"
+                    }
+                ]
+            },
+            thursday: {
+                title: "🧘 Active Recovery Day",
+                type: "recovery",
+                duration: "25 minutes",
+                exercises: [
+                    {
+                        name: "Easy Rowing",
+                        sets: "10 minutes",
+                        description: "Conversational pace, focus on smooth rhythm",
+                        youtube: "https://www.youtube.com/results?search_query=easy+rowing+technique"
+                    },
+                    {
+                        name: "Full Body Stretching",
+                        sets: "10 minutes",
+                        description: "Focus on major muscle groups, hold each stretch 30 seconds",
+                        youtube: "https://www.youtube.com/results?search_query=full+body+stretching+routine"
+                    },
+                    {
+                        name: "Light Walking",
+                        sets: "5 minutes",
+                        description: "Gentle movement to promote blood flow",
+                        youtube: "https://www.youtube.com/results?search_query=walking+for+recovery"
+                    }
+                ]
+            },
+            friday: {
+                title: "💪 Strength Day C - Full Body",
+                type: "strength",
+                duration: "30 minutes",
+                exercises: [
+                    {
+                        name: "Goblet Squats",
+                        sets: "3 sets x 12-15 reps",
+                        description: "Hold dumbbell at chest level, squat down keeping elbows inside knees, drive up",
+                        youtube: "https://www.youtube.com/results?search_query=goblet+squats+proper+form"
+                    },
+                    {
+                        name: "Incline Dumbbell Press",
+                        sets: "3 sets x 10-12 reps",
+                        description: "Set bench to 30-45° incline, press dumbbells from chest level at an angle",
+                        youtube: "https://www.youtube.com/results?search_query=incline+dumbbell+press+form"
+                    },
+                    {
+                        name: "Romanian Deadlifts",
+                        sets: "3 sets x 10-12 reps",
+                        description: "Hold dumbbells, hinge at hips, lower with straight legs, feel hamstring stretch",
+                        youtube: "https://www.youtube.com/results?search_query=dumbbell+romanian+deadlift"
+                    },
+                    {
+                        name: "Overhead Press",
+                        sets: "2 sets x 10-12 reps",
+                        description: "Start with dumbbells at shoulder height, press straight up, avoid arching back",
+                        youtube: "https://www.youtube.com/results?search_query=overhead+press+form"
+                    },
+                    {
+                        name: "Russian Twists",
+                        sets: "2 sets x 20 reps",
+                        description: "Sit with knees bent, lean back slightly, rotate dumbbell side to side across body",
+                        youtube: "https://www.youtube.com/results?search_query=russian+twists+with+weight"
+                    }
+                ]
+            },
+            saturday: {
+                title: "🏃‍♀️ Cardio Day 2 - Treadmill Focus",
+                type: "cardio",
+                duration: "25 minutes",
+                exercises: [
+                    {
+                        name: "Walking Warm-up",
+                        sets: "5 minutes",
+                        description: "Comfortable walking pace to prepare muscles",
+                        youtube: "https://www.youtube.com/results?search_query=treadmill+warm+up+walking"
+                    },
+                    {
+                        name: "Interval Training",
+                        sets: "15 minutes",
+                        description: "3 minutes brisk walk/light jog, 2 minutes easy walk (repeat 3 times)",
+                        youtube: "https://www.youtube.com/results?search_query=treadmill+interval+training"
+                    },
+                    {
+                        name: "Walking Cool-down",
+                        sets: "5 minutes",
+                        description: "Gradually slow down to gentle walking pace",
+                        youtube: "https://www.youtube.com/results?search_query=treadmill+cool+down"
+                    }
+                ]
+            },
+            sunday: {
+                title: "🧘 Active Recovery Day",
+                type: "recovery",
+                duration: "25 minutes",
+                exercises: [
+                    {
+                        name: "Gentle Treadmill Walk",
+                        sets: "15 minutes",
+                        description: "Easy pace, optional slight incline for variety",
+                        youtube: "https://www.youtube.com/results?search_query=gentle+treadmill+walking"
+                    },
+                    {
+                        name: "Yoga-style Stretching",
+                        sets: "10 minutes",
+                        description: "Focus on mobility work and relaxation",
+                        youtube: "https://www.youtube.com/results?search_query=yoga+stretching+routine"
+                    }
+                ]
+            }
+        };
+
+        const motivationalQuotes = [
+            "The groundwork for all happiness is good health. Today is the perfect day to invest in yourself! 🌟",
+            "Strong women lift each other up... and also lift weights! You've got this! 💪",
+            "Your body can do it. It's your mind you have to convince. Believe in yourself! 🧠✨",
+            "Progress, not perfection. Every rep counts, every day matters! 📈",
+            "The only bad workout is the one that didn't happen. You're here, you're doing it! 🔥",
+            "Fitness is not about being better than someone else. It's about being better than you used to be! 🌱",
+            "Your future self will thank you for the work you put in today! 🙏"
+        ];
+
+        const nutritionTips = [
+            "Focus on lean proteins and vegetables to support muscle building while in a caloric deficit.",
+            "Time your carbs around your workouts for optimal energy and recovery.",
+            "Don't forget healthy fats - they're essential for hormone production and satiety.",
+            "Hydration is key! Water supports every metabolic process in your body.",
+            "Listen to your hunger cues - eat when hungry, stop when satisfied.",
+            "Meal prep on weekends to set yourself up for success during busy weekdays.",
+            "Include colorful vegetables to ensure you're getting a variety of micronutrients."
+        ];
+
+        function getTodayDay() {
+            const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+            return days[new Date().getDay()];
+        }
+
+        function showDay(day) {
+            // Update active day card
+            document.querySelectorAll('.day-card').forEach(card => card.classList.remove('active'));
+            event.target.closest('.day-card').classList.add('active');
+
+            // Update today's workout section
+            const workout = workoutData[day];
+            document.getElementById('todayTitle').textContent = workout.title;
+            
+            let workoutHTML = `<p style="margin-bottom: 20px;"><strong>⏱️ Duration:</strong> ${workout.duration}</p>`;
+            
+            workout.exercises.forEach(exercise => {
+                workoutHTML += `
+                    <div class="exercise-item">
+                        <div class="sets-reps">${exercise.sets}</div>
+                        <h4>${exercise.name}</h4>
+                        <div class="exercise-description">${exercise.description}</div>
+                        <a href="${exercise.youtube}" target="_blank" class="youtube-link">
+                            📺 Watch Tutorial
+                        </a>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('todayWorkout').innerHTML = workoutHTML;
+
+            // Update motivational quote and nutrition tip
+            const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+            const randomTip = nutritionTips[Math.floor(Math.random() * nutritionTips.length)];
+            
+            document.getElementById('motivationalQuote').textContent = randomQuote;
+            document.getElementById('nutritionTip').textContent = randomTip;
+        }
+
+        // Initialize with today's workout
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = getTodayDay();
+            showDay(today);
+        });
+    </script>
 </body>
 </html>
