@@ -253,7 +253,7 @@
         <div class="goals-card">
             <h2>📅 Weekly Overview</h2>
             <div class="weekly-overview">
-                <div class="day-card active" onclick="showDay('monday')">
+                <div class="day-card" onclick="showDay('monday')">
                     <div style="font-size: 1.5rem;">💪</div>
                     <h3>MON</h3>
                     <p>Strength A</p>
@@ -553,7 +553,14 @@
         function showDay(day) {
             // Update active day card
             document.querySelectorAll('.day-card').forEach(card => card.classList.remove('active'));
-            event.target.closest('.day-card').classList.add('active');
+            
+            // Find and activate the correct day card
+            const dayCards = document.querySelectorAll('.day-card');
+            const dayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            const dayIndex = dayOrder.indexOf(day);
+            if (dayIndex !== -1 && dayCards[dayIndex]) {
+                dayCards[dayIndex].classList.add('active');
+            }
 
             // Update today's workout section
             const workout = workoutData[day];
